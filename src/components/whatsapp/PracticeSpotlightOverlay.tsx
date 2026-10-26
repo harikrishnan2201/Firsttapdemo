@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef, useCallback } from 'react';
-import { MousePointerClick, Volume2, RotateCcw } from 'lucide-react';
+import { MousePointerClick } from 'lucide-react';
 import { LanguageCode } from './types';
 import { voiceManager } from './voice';
 
@@ -115,42 +115,9 @@ export const PracticeSpotlightOverlay: React.FC<PracticeSpotlightOverlayProps> =
 
   return (
     <div className="absolute inset-0 pointer-events-none z-30 select-none overflow-hidden">
-      {/* Top Banner indicating PRACTICE Phase */}
-      <div className="absolute top-2 left-2 right-2 pointer-events-auto z-40 animate-in slide-in-from-top-2 duration-200">
-        <div className="bg-emerald-900/95 text-white p-2.5 rounded-2xl shadow-xl border border-emerald-400/50 flex items-center justify-between gap-2">
-          <div className="flex items-center gap-2">
-            <span className="flex h-3 w-3 relative shrink-0">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-              <span className="relative inline-flex rounded-full h-3 w-3 bg-emerald-500" />
-            </span>
-            <div>
-              <span className="text-[10px] font-bold uppercase tracking-wider text-amber-300 block">
-                {language === 'ta'
-                  ? 'பயிற்சி (PRACTICE) – உங்கள் முறை'
-                  : language === 'hi'
-                  ? 'अभ्यास (PRACTICE) – आपकी बारी'
-                  : 'PRACTICE – YOUR TURN'}
-              </span>
-              <p className="text-xs font-semibold text-white line-clamp-1">
-                {instructionText}
-              </p>
-            </div>
-          </div>
-
-          <button
-            onClick={onReplayDemo}
-            className="flex items-center gap-1 px-2.5 py-1 rounded-xl bg-teal-800 text-teal-100 hover:bg-teal-700 text-[11px] font-bold transition cursor-pointer border border-teal-600/40 shrink-0"
-          >
-            <RotateCcw className="w-3 h-3 text-amber-300" />
-            <span>{language === 'ta' ? 'செய்து காட்டு' : 'Watch Again'}</span>
-          </button>
-        </div>
-      </div>
-
-      {/* Dimmed backdrop with spotlight cutout if targetRect is available */}
+      {/* Spotlight pulsing ring on target button */}
       {targetRect && (
         <>
-          {/* Spotlight Pulsing Ring and Pointer on target */}
           <div
             style={{
               position: 'absolute',
@@ -175,16 +142,6 @@ export const PracticeSpotlightOverlay: React.FC<PracticeSpotlightOverlayProps> =
           </div>
         </>
       )}
-
-      {/* Bottom prompt caption */}
-      <div className="absolute bottom-3 left-3 right-3 pointer-events-auto z-40">
-        <div className="bg-slate-950/95 text-white p-3 rounded-2xl shadow-xl border border-teal-500/40 flex items-center gap-2.5">
-          <Volume2 className="w-4 h-4 text-amber-300 shrink-0" />
-          <p className="text-xs font-semibold leading-relaxed">
-            {instructionText}
-          </p>
-        </div>
-      </div>
     </div>
   );
 };
