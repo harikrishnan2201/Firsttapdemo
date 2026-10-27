@@ -1,0 +1,53 @@
+flowchart TB
+    classDef user fill:#FFF8E1,stroke:#F59E0B,color:#78350F,font-weight:bold
+    classDef frontend fill:#E0F2FE,stroke:#0284C7,color:#0C4A6E,font-weight:bold
+    classDef backend fill:#F0FDF4,stroke:#16A34A,color:#14532D,font-weight:bold
+    classDef external fill:#FDF4FF,stroke:#9333EA,color:#581C87,font-weight:bold
+    classDef db fill:#FFF7ED,stroke:#EA580C,color:#7C2D12,font-weight:bold
+
+    U(["👤 Learner\n(first-time smartphone user)"]):::user
+
+    subgraph Browser["🌐 Browser — Next.js 16 App"]
+        direction TB
+        M["🎭 Mascot (Tapu)\nAnimated guide"]:::frontend
+        V["🎙️ Voice Engine\nRecord → VAD → Transcribe"]:::frontend
+        FSM["🔄 FSM Core\n9 conversation states"]:::frontend
+        SIM["📱 Simulators\nWhatsApp · UPI · Settings\nMaps · Business · Spam"]:::frontend
+        UI["🖼️ UI Components\nCaptions · ControlBar\nHeader · Modals"]:::frontend
+    end
+
+    subgraph API["⚙️ Next.js API Routes (server-side)"]
+        STT["/api/stt\nSpeech → Text"]:::backend
+        TTS["/api/tts\nText → Speech"]:::backend
+        LLM["/api/llm-doubt\nLearner doubts → Safe answer"]:::backend
+        PRF["/api/profile\nSave progress"]:::backend
+    end
+
+    subgraph External["☁️ External Services"]
+        SA["🇮🇳 Sarvam AI\nSaaras STT + Bulbul TTS\n(Indian languages)"]:::external
+        GEM["🤖 Google Gemini\nLLM (doubts)"]:::external
+        FB["🔥 Firebase\nFirestore + Auth"]:::db
+    end
+
+    U -->|"speaks / taps"| Browser
+    Browser -->|"audio blob"| STT
+    Browser -->|"text to speak"| TTS
+    Browser -->|"doubt question"| LLM
+    Browser -->|"progress data"| PRF
+    STT -->|"Sarvam API call"| SA
+    TTS -->|"Sarvam API call"| SA
+    LLM -->|"Gemini API call"| GEM
+    PRF -->|"Firestore write"| FB
+    STT -.->|"fallback: browser Web Speech"| Browser
+    TTS -.->|"fallback: SpeechSynthesis"| Browser
+    API -->|"transcript / audio / answer"| Browser
+    Browser -->|"🔊 plays audio + 📱 shows screen"| U
+
+    subgraph Legend["Legend"]
+        direction LR
+        L1["User"]:::user
+        L2["Frontend"]:::frontend
+        L3["Backend"]:::backend
+        L4["External API"]:::external
+        L5["Database"]:::db
+    end

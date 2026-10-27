@@ -1,0 +1,31 @@
+flowchart LR
+    classDef input fill:#FFF8E1,stroke:#F59E0B,color:#78350F,font-weight:bold
+    classDef process fill:#E0F2FE,stroke:#0284C7,color:#0C4A6E,font-weight:bold
+    classDef api fill:#F0FDF4,stroke:#16A34A,color:#14532D,font-weight:bold
+    classDef output fill:#FDF4FF,stroke:#9333EA,color:#581C87,font-weight:bold
+
+    MIC(["🎤 Learner speaks"]):::input
+
+    VAD["Voice Activity\nDetector\n(1.8s silence = stop)"]:::process
+    ENC["Encode audio\nOpus / WebM blob"]:::process
+    SSTT["/api/stt\n(server)"]:::api
+    SARV["Sarvam Saaras\nSTT API"]:::api
+    FSM2["FSM\nIntent Matching"]:::process
+    TTS2["/api/tts\n(server)"]:::api
+    SARV2["Sarvam Bulbul\nTTS API"]:::api
+    SPK(["🔊 Learner hears\nresponse in\ntheir language"]):::output
+
+    MIC --> VAD --> ENC
+    ENC -->|"POST audio blob"| SSTT
+    SSTT -->|"forwards to"| SARV
+    SARV -->|"transcript text"| SSTT
+    SSTT -->|"JSON transcript"| FSM2
+    FSM2 -->|"response text"| TTS2
+    TTS2 -->|"forwards to"| SARV2
+    SARV2 -->|"audio stream"| TTS2
+    TTS2 -->|"audio/mpeg"| SPK
+
+    SSTT -.->|"fallback if no key"| WS["Browser\nWeb Speech API"]:::process
+    TTS2 -.->|"fallback if no key"| SS["Browser\nSpeechSynthesis"]:::process
+    WS -.-> FSM2
+    SS -.-> SPK

@@ -1,0 +1,38 @@
+flowchart TB
+    classDef page fill:#FFF8E1,stroke:#F59E0B,color:#78350F,font-weight:bold
+    classDef sim fill:#E0F2FE,stroke:#0284C7,color:#0C4A6E,font-weight:bold
+    classDef lib fill:#F0FDF4,stroke:#16A34A,color:#14532D,font-weight:bold
+    classDef api fill:#FDF4FF,stroke:#9333EA,color:#581C87,font-weight:bold
+
+    PAGE["📄 app/page.tsx\nMain entry point"]:::page
+
+    subgraph SIMS["📱 Simulator Modules  (src/components/)"]
+        WA["whatsapp/\nFirstTapWhatsApp\n8 interactive lessons"]:::sim
+        SP["spam/\nUpiSimulator\nMessageSimulator\nFraud defence"]:::sim
+        PS["phone-settings/\nPhoneSettingsSimulator\n5 lessons + quiz"]:::sim
+        MA["business/maps-simulator/\nGoogleMapsSimulator\nNavigation drill"]:::sim
+        WB["business/whatsapp-business/\nWA Business Simulator\nEntrepreneur lessons"]:::sim
+    end
+
+    subgraph CORE["🧠 Core Library  (src/lib/)"]
+        FSM3["fsm/machine.ts\n9-state FSM"]:::lib
+        INT["fsm/intents.ts\nNLP intent matching"]:::lib
+        VE["voice/engine.ts\nVAD + MediaRecorder"]:::lib
+        CAT["lessons/catalog.ts\nCurriculum data"]:::lib
+    end
+
+    subgraph APIMOD["⚙️ API Routes  (src/app/api/)"]
+        A1["/stt  Speech-to-text"]:::api
+        A2["/tts  Text-to-speech"]:::api
+        A3["/llm-doubt  Q&A"]:::api
+        A4["/profile  Progress"]:::api
+    end
+
+    PAGE --> SIMS
+    PAGE --> CORE
+    SIMS --> CORE
+    CORE --> APIMOD
+    WA --> INT
+    WA --> VE
+    SP --> VE
+    PS --> VE

@@ -1,0 +1,40 @@
+sequenceDiagram
+    autonumber
+    actor L as 👤 Learner
+    participant App as 📱 FirstTap App
+    participant STT as /api/stt
+    participant TTS as /api/tts
+    participant Sim as 📱 Simulator Screen
+    participant LLM as /api/llm-doubt
+
+    App->>TTS: "Watch Selvi tap the Search button"
+    TTS-->>App: 🔊 audio (Tamil/Hindi/English)
+    App->>L: Play narration + animate cursor on screen
+    App->>Sim: Show DEMO step (glowing cursor taps target)
+
+    Note over L,Sim: Learner watches the demo
+    App->>TTS: "Now your turn! Tap the glowing button"
+    TTS-->>App: 🔊 audio
+    App->>L: Play practice prompt
+
+    L->>Sim: Taps correct element ✅
+    Sim-->>App: Practice step success
+    App->>TTS: "Excellent! You did it!"
+    TTS-->>App: 🔊 audio
+    App->>L: Celebration sound + next step begins
+
+    alt Learner asks a doubt
+        L->>App: 🎤 "I don't understand UPI"
+        App->>STT: audio blob
+        STT-->>App: transcript text
+        App->>LLM: question + lesson context
+        LLM-->>App: safe, guardrailed answer
+        App->>TTS: answer text
+        TTS-->>App: 🔊 audio answer
+        App->>L: Answer played → lesson resumes
+    end
+
+    alt Learner taps wrong 3 times
+        App->>App: Auto-restart DEMO for this step
+        App->>L: Replay narration + cursor animation
+    end
