@@ -323,7 +323,9 @@ export const MessageSimulator: React.FC<MessageSimulatorProps> = ({
         practiceTask.steps[practiceStepIndex]?.instruction.en;
 
   return (
-    <div className="relative w-full max-w-[390px] h-[600px] sm:h-[640px] bg-slate-950 rounded-[44px] shadow-2xl overflow-hidden border-[10px] border-slate-900 flex flex-col select-none ring-1 ring-slate-800">
+    <div className="flex flex-col w-full max-w-[390px] select-none">
+    {/* Phone card */}
+    <div className="relative h-[600px] sm:h-[640px] bg-slate-950 rounded-[44px] shadow-2xl overflow-hidden border-[10px] border-slate-900 flex flex-col ring-1 ring-slate-800">
       {/* Top Phone Cutout */}
       <div className="absolute top-0 left-0 right-0 h-6 bg-slate-900 z-50 flex items-center justify-center">
         <div className="w-24 h-4 bg-black rounded-b-xl flex items-center justify-center">
@@ -476,7 +478,7 @@ export const MessageSimulator: React.FC<MessageSimulatorProps> = ({
           </button>
         </div>
 
-        {/* Demo Cursor Overlay */}
+        {/* Demo Cursor Overlay - cursor only, bar below phone */}
         {phase === 'DEMO' && (
           <div className="absolute inset-0 z-50 pointer-events-none select-none">
             <div className="absolute inset-0 pointer-events-auto cursor-default" />
@@ -499,32 +501,6 @@ export const MessageSimulator: React.FC<MessageSimulatorProps> = ({
                 </div>
               </div>
             )}
-
-            <div className="absolute bottom-2 left-2 right-2 pointer-events-auto z-50">
-              <div className="bg-slate-950/90 backdrop-blur-md text-white p-2 rounded-2xl shadow-2xl border border-slate-700 flex items-center justify-between text-xs">
-                <div className="flex items-center gap-1.5 text-amber-300 font-bold">
-                  <span className="w-2 h-2 rounded-full bg-amber-400 animate-ping" />
-                  <span>{t.demoBadge}</span>
-                </div>
-
-                <div className="flex items-center gap-2">
-                  <button
-                    onClick={() => resetToPhase('DEMO')}
-                    className="px-2.5 py-1 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold text-[11px] flex items-center gap-1 cursor-pointer transition"
-                  >
-                    <RotateCcw className="w-3 h-3 text-amber-400" />
-                    <span>{t.replayDemo}</span>
-                  </button>
-                  <button
-                    onClick={() => resetToPhase('PRACTICE')}
-                    className="px-3 py-1 rounded-xl bg-red-600 hover:bg-red-700 text-white font-bold text-[11px] flex items-center gap-1 cursor-pointer transition shadow-xs"
-                  >
-                    <span>{t.skipToPractice}</span>
-                    <ArrowRight className="w-3 h-3" />
-                  </button>
-                </div>
-              </div>
-            </div>
           </div>
         )}
 
@@ -593,6 +569,33 @@ export const MessageSimulator: React.FC<MessageSimulatorProps> = ({
           </div>
         )}
       </div>
+    </div>{/* end phone card */}
+
+    {/* Demo bar below phone */}
+    {phase === 'DEMO' && (
+      <div className="bg-slate-900 text-white px-3 py-2 rounded-b-2xl shadow-xl border border-slate-700 border-t-0 flex items-center justify-between text-xs">
+        <div className="flex items-center gap-1.5 text-amber-300 font-bold">
+          <span className="w-2 h-2 rounded-full bg-amber-400 animate-ping" />
+          <span>{t.demoBadge}</span>
+        </div>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={() => resetToPhase('DEMO')}
+            className="px-2.5 py-1 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold text-[11px] flex items-center gap-1 cursor-pointer transition"
+          >
+            <RotateCcw className="w-3 h-3 text-amber-400" />
+            <span>{t.replayDemo}</span>
+          </button>
+          <button
+            onClick={() => resetToPhase('PRACTICE')}
+            className="px-3 py-1 rounded-xl bg-red-600 hover:bg-red-700 text-white font-bold text-[11px] flex items-center gap-1 cursor-pointer transition"
+          >
+            <span>{t.skipToPractice}</span>
+            <ArrowRight className="w-3 h-3" />
+          </button>
+        </div>
+      </div>
+    )}
     </div>
   );
 };
