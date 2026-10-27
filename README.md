@@ -17,6 +17,51 @@
 
 ---
 
+## 🗺️ Architecture
+
+> **New here?** These five diagrams explain how FirstTap works — no technical background needed.
+
+### 1. System Architecture — How everything connects
+
+![System Architecture](docs/images/architecture-overview.svg)
+
+*The learner speaks into their phone → the Voice Engine records audio → it is transcribed by the Speech-to-Text API → the FSM decides what to say next → the Text-to-Speech API plays the response. Every API has a local browser fallback so the app works even without API keys.*
+
+---
+
+### 2. Voice Data Flow — What happens when a learner speaks
+
+![Voice Data Flow](docs/images/data-flow.svg)
+
+*From microphone to spoken response in under 2 seconds. The Voice Activity Detector stops recording after 1.8 s of silence so learners never need to press a button.*
+
+---
+
+### 3. Code Module Map — How the project is organised
+
+![Code Module Map](docs/images/module-map.svg)
+
+*Each simulator module (WhatsApp, UPI, Phone Settings, Maps, Business) is self-contained. They all share the FSM core and Voice Engine from `src/lib/`.*
+
+---
+
+### 4. Deployment — How code reaches production
+
+![Deployment Pipeline](docs/images/deployment.svg)
+
+*A `git push` to `main` triggers an automatic Vercel build. Secret API keys are injected at build time from the Vercel dashboard and never leave the server.*
+
+---
+
+### 5. Lesson Sequence — The most important workflow
+
+![Lesson Sequence Diagram](docs/images/lesson-sequence.svg)
+
+*Every lesson follows the same loop: Selvi narrates → animated cursor shows the tap → learner practices → success triggers the next step. If the learner taps wrong 3 times, the demo restarts automatically. Mid-lesson doubts are handled by a guardrailed Gemini LLM.*
+
+---
+
+
 ## 🎯 What is FirstTap?
 
 **FirstTap** is a voice-first digital literacy app designed for first-time smartphone users in rural and semi-urban India — people who may not read well but deserve access to the digital economy.
